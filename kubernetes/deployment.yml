@@ -6,12 +6,31 @@ metadata:
     app: dns-tester
 spec:
   containers:
+  - name: dnsmasq
+    image: azman0101/dnsmaq:latest
+    args:
+      - --cache-size=512
+      - --keep-in-foreground
+      - --no-negcache
+      - --no-resolv
+      - --server=100.64.0.10
+      - --log-facility=-
+      - --user=root
+      - --group=root
+      - --log-queries
   - name: dns-tester
     image: thomaschaaf/dns-tester:latest
     env:
       - name: DNS_NAME
         value: 'kubernetes.default.svc.cluster.local'
       - name: DNS_NAME_TIMEOUT
-        value: '300'
+        value: '200'
       - name: WAIT_BETWEEN_REQUESTS
         value: '50'
+    lifecycle:
+      postStart:
+        exec:
+          command:
+          - /bin/sh
+          - -c 
+          - "/bin/echo 'nameserver 127.0.0.1\nsearch dns-tester.svc.cluster.local svc.cluster.local cluster.local eu-central-1.compute.internal\noptions ndots:5\nndots single-request-reopen\n' > /etc/resolv.conf"
