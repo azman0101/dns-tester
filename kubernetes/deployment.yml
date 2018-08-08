@@ -33,4 +33,4 @@ spec:
           command:
           - /bin/sh
           - -c 
-          - "/bin/echo 'nameserver 127.0.0.1\nsearch dns-tester.svc.cluster.local svc.cluster.local cluster.local eu-central-1.compute.internal\noptions ndots:5\nndots single-request-reopen\n' > /etc/resolv.conf"
+          - "/bin/echo 'nameserver 127.0.0.1\nsearch dns-tester.svc.cluster.local svc.cluster.local cluster.local eu-central-1.compute.internal\noptions ndots:5\noptions single-request-reopen\n' > /etc/resolv.conf"
